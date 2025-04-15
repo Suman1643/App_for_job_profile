@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
+  ImageBackground
 } from 'react-native';
 import { Stack } from 'expo-router';
 
@@ -61,6 +62,14 @@ export default function StudentInsights() {
     const isSelected = bestResumes.includes(item.id);
 
     return (
+      <ImageBackground
+            source={{
+              uri: 'https://img.freepik.com/premium-photo/woman-s-table-with-coffee-office-supplies-pink-makeup-brushes-keyboard-notebook_114309-1837.jpg?w=1380',
+            }}
+            style={styles.bg}
+            resizeMode="cover"
+        >
+          <View style={styles.overlay}>
       <View style={styles.resumeCard}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.summary}>{item.summary}</Text>
@@ -87,6 +96,8 @@ export default function StudentInsights() {
           </TouchableOpacity>
         </View>
       </View>
+      </View>
+      </ImageBackground>
     );
   };
 
@@ -106,6 +117,15 @@ export default function StudentInsights() {
 }
 
 const styles = StyleSheet.create({
+  bg: {
+    flex: 1,
+  },
+overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
   container: { flex: 1, backgroundColor: '#f2f2f2', paddingHorizontal: 16 },
   title: {
     fontSize: 22,

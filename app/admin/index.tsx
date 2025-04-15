@@ -1,61 +1,92 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+} from 'react-native';
 import { useRouter, Stack } from 'expo-router';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 export default function AdminDashboard() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ title: 'Admin Dashboard' }} />
+    <ImageBackground
+      source={{
+        uri: 'https://i.pinimg.com/736x/15/66/c8/1566c88ea7315fba44869c1f51c07afe.jpg',
+      }}
+      style={styles.bg}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
+        <SafeAreaView style={styles.overlay}>
+          <Stack.Screen options={{ title: 'Admin Dashboard' }} />
 
-      {/* Top Left - Back to Student Dashboard */}
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.replace('/')}
-        >
-          <Ionicons name="arrow-back" size={18} color="#fff" />
-          <Text style={styles.backButtonText}>Student Panel</Text>
-        </TouchableOpacity>
+          {/* Top Left - Back to Student Dashboard */}
+          <View style={styles.topBar}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.replace('/')}
+            >
+              <Ionicons name="arrow-back" size={18} color="#fff" />
+              <Text style={styles.backButtonText}>Student Panel</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Title */}
+          <Text style={styles.title}>Welcome, Admin</Text>
+
+          {/* Action Buttons */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.insightsButton}
+              onPress={() => router.push('/admin/insights')}
+            >
+              <MaterialIcons name="analytics" size={22} color="#fff" />
+              <Text style={styles.buttonText}>View Student Insights</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.postButton}
+              onPress={() => router.push('/admin/post-internship-job')}
+            >
+              <Ionicons name="create-outline" size={22} color="#fff" />
+              <Text style={styles.buttonText}>Post Internship/Job</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.postsButton}
+              onPress={() => router.push('/admin/post')}
+            >
+              <Entypo name="list" size={22} color="#fff" />
+              <Text style={styles.buttonText}>View Posts</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
       </View>
-
-      {/* Title */}
-      <Text style={styles.title}>Welcome, Admin</Text>
-
-      {/* Action Buttons */}
-      <View style={styles.buttonContainer}>
-        {/* View Insights */}
-        <TouchableOpacity
-          style={styles.insightsButton}
-          onPress={() => router.push('/admin/insights')}
-        >
-          <MaterialIcons name="analytics" size={22} color="#fff" />
-          <Text style={styles.buttonText}>View Student Insights</Text>
-        </TouchableOpacity>
-
-        {/* Post Internship/Job */}
-        <TouchableOpacity
-          style={styles.postButton}
-          onPress={() => alert('Navigate to Post Job/Internship')}
-        >
-          <Ionicons name="create-outline" size={22} color="#fff" />
-          <Text style={styles.buttonText}>Post Internship/Job</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9f9f9', paddingHorizontal: 20, paddingTop: 20 },
-
-  topBar: { alignItems: 'flex-start' },
-
+  bg: {
+    flex: 1,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  topBar: {
+    alignItems: 'flex-start',
+  },
   backButton: {
     flexDirection: 'row',
-    backgroundColor: '#333',
+    backgroundColor: '#444',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
@@ -66,47 +97,53 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontWeight: '600',
   },
-
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     marginTop: 30,
     marginBottom: 40,
     textAlign: 'center',
-    color: '#333',
+    color: '#fff',
   },
-
   buttonContainer: {
     flex: 1,
     justifyContent: 'center',
     gap: 30,
     alignItems: 'center',
   },
-
   insightsButton: {
-    backgroundColor: '#6A1B9A',
-    width: 260,
+    backgroundColor: '#9C27B0',
+    width: 270,
     height: 60,
-    borderRadius: 12,
+    borderRadius: 14,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    elevation: 3,
+    elevation: 5,
   },
-
   postButton: {
-    backgroundColor: '#0277BD',
-    width: 260,
+    backgroundColor: '#0288D1',
+    width: 270,
     height: 60,
-    borderRadius: 12,
+    borderRadius: 14,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    elevation: 3,
+    elevation: 5,
   },
-
+  postsButton: {
+    backgroundColor: '#4CAF50',
+    width: 270,
+    height: 60,
+    borderRadius: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    elevation: 5,
+  },
   buttonText: {
     color: '#fff',
     fontSize: 16,

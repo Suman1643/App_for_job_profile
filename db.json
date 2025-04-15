@@ -1,0 +1,19 @@
+{
+    "jobs": [
+      {
+        "id": "1",
+        "title": "Frontend Intern",
+        "company": "TechNova",
+        "skills": ["React", "JS"],
+        "jobType": "Remote"
+      },
+      {
+        "id": "2",
+        "title": "Backend Intern",
+        "company": "NodeStack",
+        "skills": ["Node.js", "MongoDB"],
+        "jobType": "Offline"
+      }
+    ]
+  }
+  

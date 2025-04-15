@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { ScrollView, View, Text, TextInput, Button, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { Stack } from 'expo-router';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getStudentProfile } from '../utils/getStudentProfile';
+import getUserId from '../utils/getUserId'; // adjust path based on location
+
+
 
 export default function ResumeBuilder() {
   const [name, setName] = useState('');
@@ -12,13 +19,49 @@ export default function ResumeBuilder() {
   const [skills, setSkills] = useState('');
   const [projects, setProjects] = useState('');
   const [certifications, setCertifications] = useState('');
-
-  const handleSubmit = () => {
-    // You can later send this to a backend or store it
-    Alert.alert('Resume Submitted ✅', 'Your resume has been saved successfully.');
+  const getUserId = async () => {
+    let userId = await AsyncStorage.getItem('userId');
+    if (!userId) {
+      userId = uuidv4(); // generate new UUID
+      await AsyncStorage.setItem('userId', userId);
+    }
+    return userId;
   };
 
+  const saveResume = async (resumeFile: any) => {
+    const profile = await getStudentProfile();
+  
+    if (!profile) {
+      Alert.alert('Error', 'Student profile not found. Please complete your profile first.');
+      return;
+    }
+  
+    const resumeData = {
+      userId: profile.userId,
+      studentName: profile.studentName,
+      email: profile.email,
+      resume: resumeFile,
+    };
+  
+    try {
+      await axios.post('https://192.168.107.50:5000/api/resume/save', resumeData);
+      Alert.alert('Success', 'Resume uploaded successfully!');
+    } catch (error) {
+      console.error('Resume upload failed:', error);
+      Alert.alert('Error', 'Resume upload failed. Please try again.');
+    }
+  };
+
+  
+
   return (
+    <ImageBackground
+          source={{ uri: 'https://i.pinimg.com/736x/15/66/c8/1566c88ea7315fba44869c1f51c07afe.jpg' }}
+          style={styles.background}
+          resizeMode="cover"
+        >
+    <View style={styles.overlay}>
+
     <ScrollView contentContainerStyle={styles.container}>
       <Stack.Screen options={{ title: 'Resume Builder' }} />
       <Text style={styles.header}>📝 Build Your Resume</Text>
@@ -59,17 +102,26 @@ export default function ResumeBuilder() {
 
       {/* Submit Button */}
       <View style={{ marginTop: 20 }}>
-        <Button title="Submit Resume" onPress={handleSubmit} color="#28a745" />
+        <Button title="Save Resume" onPress={saveResume} color="#28a745" />
       </View>
     </ScrollView>
+    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: { flex: 1 },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 20,
+    paddingTop: 50,
+  },
   container: {
     padding: 20,
     paddingBottom: 50,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   header: {
     fontSize: 26,
@@ -83,6 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 15,
     fontSize: 16,
+    color: 'gray',
   },
   input: {
     borderWidth: 1,
